@@ -1,0 +1,697 @@
+﻿COMP5318/COMP4318 Machine Learning and Data Mining Semester 2, 2026
+
+Assignment 2: Image Classification 
+
+Key information 
+
+Deadlines 
+Submission: Friday week 11 (15 May), 11.59pm
+
+Late submissions policy 
+
+Late submissions are allowed up to 3 days late. A penalty of 5% per day late will apply. Assignments more 
+than 3 days late will not be accepted (i.e. will get 0 marks). The day cut-off time is 11:59pm.  
+
+Marking 
+This assignment is 20 marks = 20% of your final mark. It consists of two components: code (8 marks) and 
+report (12 marks). A marking guide for both the code and report is included at the end of this document.
+
+The assignment can be completed by a group of 2-4 students. No more than 4 students are allowed. See 
+the submission details section for more information about how to submit.  
+
+Submission 
+Three files are required to be submitted in the relevant submission portals on Canvas: 
+
+- Your report as a .pdf file
+- Your Jupyter notebook as a .ipynb file
+- Your Jupyter notebook as a .pdf file
+
+A pdf of your Jupyter notebook can be generated using File>Download as>PDF or Print Preview > Save as 
+PDF or File->Download as >HTML, then open the html file and save it as pdf. 
+
+Name your files with the following format: 
+
+- Report:
+o A2-report-SID1-SID2-SID3-SID4.pdf
+
+- Code:
+o a2-code-SID1-SID2-SID3-SID4.ipynb
+o a2-code-SID1-SID2-SID3-SID4.pdf
+
+where SID1, SID2, SID3 and SID4 are the SIDs of the four students in your group. 
+
+Please do not include your names anywhere in your submissions or the file names since the marking is 
+anonymous. 
+
+Before you submit, you need to create a group in Canvas. Under the “People” page on Canvas, select the 
+“Image Classification Project” tab. You and your group partners should choose one of the empty groups 
+listed under this tab, and join it. Groups have a maximum of 4 members.  The assignment should be 
+completed in groups of 2 to 4 students. 
+
+Important: The "Machine Learning Project Groups" registration is for Assignment 1, the "Image 
+Classification Project" registration is for Assignment 2. You need to register a group under "Image 
+Classification Project" even if you work with the same partner as in Assignment 1. 
+
+Page 1 of 12 
+
+
+
+COMP5318/COMP4318 Machine Learning and Data Mining Semester 2, 2026
+
+Please be careful as otherwise your mark may not be recorded correctly. There may also be a mark 
+deduction for not following the instructions. 
+
+Then you need to submit your assignment on behalf of the group in the corresponding submission box. 
+Only one student from the group needs to submit, not all. 
+
+Code information 
+
+The code for this assignment should be written in Python in the Jupyter Notebook environment. 
+Please follow the structure in the template notebook provided as part of the assignment 
+materials. Your implementation of the algorithms should predominantly utilise the same suite of 
+libraries we have introduced in the tutorials (Keras, scikit-learn, numpy, pandas etc.). Other libraries may 
+be utilised for minor functionality such as plotting, however please specify any dependencies at the 
+beginning of your code submission. While most of your explanation and justification can be included in 
+the report, please ensure your code is well formatted, and that there are sufficient comments or text 
+included in the notebook to explain the cells.  
+
+You may choose to run your code locally or on a cloud service (such as Google Colaboratory), however 
+your final submission needs to be able to run on a local machine. Please submit your notebook with 
+the cell output preserved and ensure that all the results presented in your report are demonstrated 
+in your submitted notebook. Your code may also be rerun by your marker, so please ensure there are no 
+errors in your submitted code and it can be run in order. 
+
+Task 
+In this assignment, you will implement and compare several machine learning algorithms, including 
+a Multilayer Perceptron (MLP) and Convolutional Neural Network (CNN), on an image classification task. 
+You will need to demonstrate your understanding of a full machine learning pipeline, including data 
+exploration and pre-processing, model design, hyperparameter tuning, and interpreting results. 
+Moreover, the assignment will require you to consolidate your knowledge from the course so far to 
+effectively discuss the important differences between the algorithms.  
+
+While better performance is desirable, it is not the main objective of this assignment. Since chasing the 
+best possible performance may require large models and specialised GPU hardware, you should 
+focus on thoroughly justifying your decisions and analysing your results. Please see the marking criteria 
+at the end of the specification for how you will be assessed. There are no marks allocated for reaching a 
+particular performance or having highly complex models.  
+
+1. Code
+
+As mentioned above, your code submission for the assignment should be an .ipynb Jupyter notebook 
+in similar fashion to the tutorials, including well commented code and sufficient text to explain the cells. 
+Please follow the structure provided in the template notebook available as part of the assignment 
+materials. 
+
+Data loading, pre-processing, and exploration 
+
+The dataset you will use in this assignment is PathMNIST. It contains 28x28 colour images of 
+microscope slides of normal and abnormal body tissues. More information on the dataset and the original 
+source can be found in the associated paper here: https://www.nature.com/articles/s41597-022-01721-8 . 
+The dataset is licensed under CC BY 4.0 (attribution is provided below). 
+
+Page 2 of 12 
+
+
+
+COMP5318/COMP4318 Machine Learning and Data Mining Semester 2, 2026
+
+Note that we have provided a subset of this dataset for the assignment, with different splits to the original. 
+
+Please refer to the provided dataset on Canvas rather than downloading from the MedMNIST site. Code to 
+load these files is provided in the template notebook. 
+
+The images in this dataset have relatively low dimensionality to aid keeping your runtimes short. You can 
+increase/decrease the dimensionality of the data or make use of a subset of the training data as required, 
+with justification in the report. 
+
+To better understand the properties of the data and the preprocessing that may be appropriate, you should 
+begin with some exploration of the data. You may like to explore what the different classes are, the number 
+of examples from each class, and consider characteristics of the images such as whether they are centred, 
+size of different features in the images, pixel intensities across different images, key differences between 
+classes etc. Explore if there are factors that might make the task more difficult, such as classes with similar 
+features. You should include anything you feel is relevant in this section. 
+
+Based on your insight from the data exploration and/or with reference to other sources, you should apply 
+appropriate preprocessing techniques. Your choice of preprocessing needs to be justified in the report. You 
+may apply different preprocessing techniques for the different algorithms, with justification in the report.  
+
+Consider if you need to make any additional splits of the data and think carefully about how each part of the 
+data should be utilised to evaluate hyperparameter combinations and compare the performance of the 
+different models. 
+
+Algorithm design and setup 
+
+You will be required to design and implement three algorithms that we have covered in the course using 
+the sklearn and/or keras libraries, in order to investigate their strengths and weaknesses.  
+
+1. An appropriate algorithm of your choice from the first 6 weeks of the course
+
+2. A feedforward multilayer perceptron neural network (MLP)
+
+3. A convolutional neural network (CNN)
+
+In this section, implement an instance of each model before tuning hyperparameters, and set up any 
+functions you may require to tune hyperparameters in the next section. 
+
+Due to runtime constraints, it is not feasible to consider every possible neural network  architecture when 
+designing your models, however you should justify your design decisions in the report, and you may wish to 
+conduct a few rough experiments to converge on a reasonable design. Remembering that the focus of the 
+assignment is to demonstrate your understanding of and compare the algorithms, not to achieve state-of-
+the-art performance, keep your models appropriately small such that you can complete the 
+hyperparameter tuning in a reasonable time on your hardware of choice.  
+
+Although you may like to reference external sources when designing your algorithms, you must implement 
+your neural network models yourself, rather than import prebuilt models from Keras (such as those 
+available in keras.applications). 
+
+Page 3 of 12 
+
+
+
+COMP5318/COMP4318 Machine Learning and Data Mining Semester 2, 2026
+
+Hyperparameter tuning 
+
+Perform a search over relevant hyperparameters for each algorithm using an appropriate search strategy 
+of your choice (eg. cross validation, validation set grid search, Bayesian search, etc.). You may use scikit-
+learn and/or keras-tuner to perform your searches, and you are suggested to look through the 
+documentation of these packages to see the available utilities and decide on your implementation. 
+Remember there are many factors that can affect the runtime of your search, such as the number of 
+epochs, optimisers, and the particular hyperparameters included in the search. Please ensure you search 
+over the following:  
+
+o Algorithm of your choice from the first 6 weeks:
+o You will need to choose an appropriate set of hyperparameters to search over based on
+
+what was covered in the tutorials or other references
+o Multilayer feedforward and convolutional neural networks:
+
+o Tune over at least 3 different hyperparameters
+
+You will need to justify your search method, choices of hyperparameters to search over, and the values 
+included in the search as part of your report (see below). 
+
+Keep a record of the runtimes and results with each hyperparameter combination (you may need to consult 
+documentation to see how to extract this information) and use these to produce appropriate 
+visualisations/tables of the trends in your hyperparameter search to aid the discussion in your report.  
+
+Please preserve the output of these cells in your submission and keep these hyperparameter search cells 
+independent from the other cells of your notebook to avoid needing to rerun them, as markers will not be 
+able to run this code (it will take too long), i.e. ensure the later cells can be run if these grid search cells are 
+skipped. 
+
+Final models 
+
+After selecting the best set of hyperparameters for each model, include cells which train the models with 
+the selected hyperparameters independently of the parameter search cell, and use these implementations 
+to compare the performance (and other relevant properties) of the different models using the test set. 
+
+2. Report
+An approximate outline of the report requirements is provided below, but make sure to reference 
+the marking criteria also for the mark distribution. You may write your report in MS Word or LaTeX, but 
+please ensure that it is well-formatted and submit it as a pdf.   
+
+Please stick to the structure (headings and subheadings) outlined below, as these align with the 
+marking criteria. 
+
+Please do not include screenshots of your code in the report. The report should not be focussed on 
+your code and describing exactly how you have implemented things, but rather on the content outlined 
+below.  
+
+Introduction 
+
+State the aim of your study and outline the importance of your study. You can consider both the 
+importance of this dataset itself, but also the importance of comparing algorithms and their suitability for 
+the task more generally. 
+
+Page 4 of 12 
+
+
+
+COMP5318/COMP4318 Machine Learning and Data Mining Semester 2, 2026
+
+Data 
+In this section, you should describe the dataset and pre-processing. 
+
+Data description and exploration. Describe the data, including all its important characteristics, such as 
+the number of samples, classes, dimensions, and the original source of the images. Discuss your 
+data exploration, including characteristics/difficulties as described in the relevant section above and 
+anything you consider relevant. Where relevant, you may wish to include some sample images to aid this 
+discussion. For information about the original dataset, such as the class names, the MedMNIST site 
+(https://medmnist.com) and papers included in the dataset attribution below may be useful. 
+
+Pre-processing. Justify your choice of pre-processing either through your insights from the data 
+exploration or with reference to other sources. Explain how the preprocessing techniques work, their 
+effect/purpose, and any choices in their application. If you have not performed pre-processing or have 
+intentionally omitted possible preprocessing techniques after consideration, justify these decisions.   
+
+Methods
+In this section, you should explain the classification methods you used.  
+
+Theory. For each algorithm, explain the main theoretical ideas (this will be useful as a framework 
+for comparing them in the rest of the report). Explain why you chose your particular algorithm from the 
+first six weeks. 
+
+Strengths and weaknesses. Describe the relative strengths and weaknesses of the algorithms from a 
+theory perspective. Consider factors such as performance, overfitting, runtime, number of 
+params and interpretability. Explain the reasons; e.g. don’t simply state that CNNs perform better on 
+images, but explain why this is the case.  
+
+Architecture and hyperparameters – State and explain the chosen architectures or other relevant 
+design choices you made in your implementation (e.g. this is the place to discuss your particular neural 
+network configurations). Describe the hyperparameters you will tune over, the values included in the 
+search, and outline your search method. Briefly explain what each hyperparameter controls and the 
+expected effect on the algorithm. For example, consider the effects of changing the learning rate, or 
+changing the stride of a convolutional layer. Justify why you have made these choices about 
+the search method, and hyperparameters included.  
+
+Results and discussion 
+In this section, you should present and discuss your results. Please do not include screenshots of raw 
+code outputs when presenting your results. Instead tabulate/plot any results in a manner more 
+appropriate for presentation in the report. 
+
+Begin with the hyperparameter tuning results. Include appropriate tables or graphs to illustrate the trends 
+(performance, runtime etc.) across different hyperparameter values. Discuss the trends and provide 
+possible explanations for their observation. Consider if the results aligned with your predictions.  
+
+Next, present a comparison of the models you have implemented for this task (with the 
+best hyperparameters found). Include a table showing the best hyperparameter combination for each 
+algorithm, the performance on the test set (e.g. accuracy and other performance measures), and the 
+runtime(s). Analyse and discuss the results, referring back to the theoretical properties and strengths/
+weaknesses of the classifiers discussed in the Methods section. Consider if the results aligned with your 
+expectations. What factors influenced the runtime (time per epoch, total number of epochs required 
+etc.)? Page 5 of 12 
+
+
+
+COMP5318/COMP4318 Machine Learning and Data Mining Semester 2, 2026
+
+Include anything you consider interesting and/or relevant. For example, you may like to comment on the 
+types of mistakes particular models made via confusion matrices etc.  
+
+Conclusion 
+
+Summarise your main findings, mention any limitations, and suggest future work. When making your 
+conclusions, consider not only accuracy, but also factors such as runtime and interpretability. Ensure your 
+future work suggestions are concrete (e.g. not in the spirit of “try more algorithms”) and justify why they 
+would be appropriate.  
+
+Reflection 
+
+Write one or two paragraphs describing the most important thing that you have learned while 
+completing the assignment. Every student should write their own reflection. 
+
+AI Acknowledgement
+Please include an AI Acknowledgement section. If you have used AI in A2 answer the following:
+
+• What generative AI tools have you used to complete A2?
+• How have you used generative AI tools in A2?
+
+If you didn't use any AI tools in A2, you may put "None" in this section.
+
+References 
+
+Include references to any sources you have utilised in completing the code and/or report. You may 
+choose any appropriate academic referencing style, such as IEEE. 
+
+Page 6 of 12 
+
+
+
+COMP5318/COMP4318 Machine Learning and Data Mining Semester 2, 2026
+
+Academic honesty – important 
+Please read the University policy on Academic Honesty very carefully: 
+https://sydney.edu.au/students/academic-integrity.html  
+
+Plagiarism (copying from another student, website or other sources), making your work available to 
+another student to copy, engaging another person to complete the assignments instead of you (for 
+payment or not) are all examples of academic dishonesty. Note that when there is copying between 
+students, both students are penalised – the student who copies and the student who makes their work 
+available for copying. 
+
+Please do not confuse legitimate co-operation and cheating. You can discuss the assignment with 
+other students, this is a legitimate collaboration, but you cannot complete the assignment together unless 
+you are from the same group. Every group must write their own code and report. 
+
+You are allowed to use generative AI tools for this assignment. 
+
+Include an acknowledgement of AI use in your report and .ipynb notebook file (this has been included in 
+the provided template).
+
+The University penalties are severe and include: 1) a permanent record of academic dishonesty 
+in the university database, 2) mark deduction, ranging from 0 for the assignment to Fail for the course 
+and 3) in severe cases, suspension from the University and cancelling of your student visa. 
+
+The University penalties are severe and include: 1) a permanent record of academic dishonesty 
+on your student file, 2) mark deduction, ranging from 0 for the assignment to Fail for the course 
+and 3) expulsion from the University and cancelling of your student visa.  
+
+If there is a suspected case, the investigation may take several months. Your mark will not be 
+finalised until the investigation is completed. This may create problems enrolling in other courses next 
+semester for which this course is a pre-requisite or delaying your graduation. Going through the 
+investigation is also very stressful. 
+
+We will use similarity detection software to compare your assignments with other sources and with each 
+other. If you cheat, the chances that you will be caught are very high.  
+
+Be smart and don’t risk your reputation by engaging in plagiarism and academic dishonesty. 
+
+Page 7 of 12 
+
+
+
+COMP5318/COMP4318 Machine Learning and Data Mining Semester 2, 2026
+
+Marking criteria 
+1. Code – 8 marks = 40% of the assignment mark (8% of your final mark)
+
+Requirement Mark  
+
+1. Implements Preprocessing does Preprocessing code Good; preprocessing Excellent; 
+appropriate not function or has runs but has moderate techniques implemented preprocessing 
+preprocessing significant implementation issues with minor issues [0.35] performed 
+
+techniques implementation [0.25] appropriately with no 
+
+issues [0] implementation issues 
+[0.5] 
+
+2. Implements No functioning Algorithm functions, Good; algorithm functions Excellent; algorithm is 
+appropriate algorithm/significant but is not appropriate and is appropriate. Minor  appropriate, and no 
+algorithm of choice issues with or has serious issues issues with  issues with  
+from first 6 weeks implementation [0]  with design or implementation or other implementation [1]  
+of course implementation [0.5]  issues [0.75]  
+
+3. Sets up and No functioning Algorithm somewhat Good; algorithm functions Excellent; algorithm is 
+implements MLP algorithm/major functions, but has well. Minor issues with  appropriate and there 
+
+issues with serious issues with Implementation or other are no issues with  
+implementation [0] design or  issues [0.75]  implementation [1]  
+
+implementation [0.5] 
+
+4. Sets up and No functioning Algorithm somewhat Good; algorithm functions Excellent; algorithm is 
+implements CNN algorithm/major functions, but has well. Minor issues with  appropriate and there 
+
+issues with serious issues with implementation or other are no issues with  
+implementation [0] design or  issues [0.75]  implementation [1]  
+
+implementation [0.5] 
+
+5. Algorithm of No functioning Major issues with Good; minor issues with Excellent; well 
+choice – hyperparameter search method, search method, implemented search 
+hyperparameter search or completely hyperparameters, or hyperparameters, or method, 
+
+search irrelevant hyperparameter values values. Tunes over key hyperparameters and 
+hyperparameters  [0.5]  hyperparams for hyperparameter 
+[0]  
+
+chosen algorithm [0.75] values [1]  
+
+6. MLP  - No functioning Major issues with Good; minor issues with Excellent; well chosen 
+hyperparameter hyperparameter search method, search method, search method, 
+search search or completely missing hyperparameters, or sufficient and 
+
+irrelevant parameters hyperparameters, or hyperparameter values. appropriate 
+[0]  hyperparameter values Tunes over at least 3 hyperparameters and 
+
+[0.5]  hyperparameters values included in 
+
+appropriately. [0.75] search  [1]  
+
+Page 8 of 12 
+
+
+
+COMP5318/COMP4318 Machine Learning and Data Mining Semester 2, 2026 
+
+7. CNN - No functioning Major issues with Good; minor issues with Excellent; well chosen 
+hyperparameter hyperparameter search method, search method, search method, 
+search search or completely missing hyperparameters, or sufficient and 
+
+irrelevant parameters hyperparameters, or hyperparameter values. appropriate 
+[0]  hyperparameter Tunes over at least 3 hyperparameters and 
+
+values included in 
+values [0.5]  hyperparameters 
+
+search  [1]  
+appropriately. [0.75]  
+
+8. Best Not completed, or significant issues [0] Completed with no/minimal issues [0.5] 
+hyperparameter
+combination of
+each model trained 
+and evaluated on 
+test set in separate
+cell 
+
+9. Code quality Very poor code Poor code quality, e.g. Good code quality; minor Excellent, readable 
+quality, e.g. some poor comments or not  issues with one aspect code and overall 
+code does not run, no enough markdown  such as comments, not notebook [1]  
+comments, no text to easily read the enough markdown, or 
+markdown text, very notebook, poor variable naming [0.75]  
+poor variable names  variable names [0.5]  
+[0]  
+
+2. Report – 12 marks = 60% of the assignment mark (12% of your final mark)
+
+Requirement Mark 
+
+Introduction – 0.5 marks  
+
+1.Aim Aim is not discussed or very Good; minor issues, such as Excellent; aim of study is well 
+poor [0]  not highlighting all aspects of discussed with no issues 
+
+study (comparison,  [0.25] 
+hyperparameter tuning etc.)  
+[0.15]  
+
+2.Importance Importance not discussed or Good; importance partially Excellent; importance well 
+very poor [0]  discussed. Missing some justified and related to practical 
+
+aspects, such as importance of use [0.25]  
+comparing classifiers or other 
+issues [0.15]  
+
+Data – 0.5 marks 
+
+3. Data description and Dataset not Limited dataset Minor issues with Thorough data description 
+exploration described or very description with dataset description and exploration, including 
+
+poor [0]  missing information, and/or exploration  discussion of important 
+and/or no data [0.15]  features and challenges as 
+
+exploration [0.1]  mentioned in the 
+assignment specification, 
+with sample images 
+where relevant. [0.25]  
+
+Page 9 of 12 
+
+
+
+COMP5318/COMP4318 Machine Learning and Data Mining Semester 2, 2026
+
+4. Pre-processing Pre-processing not Pre-processing Minor issues with Excellent description of 
+description and mentioned or very mentioned but not either preprocessing preprocessing techniques (if 
+justification poor [0]  described well and/or description or any) and their 
+
+missing/poor justification [0.15] effect/purpose. Techniques 
+justification [0.1] used are justified from 
+
+lectures, labs, or other 
+sources. Brief discussion of 
+which pre-processing 
+techniques were 
+considered but not 
+necessary. [0.25]
+
+Methods – 5 marks 
+
+5. Algorithm of choice – Both description Major issues Good description Excellent description with 
+description and and justification description or and justification of sufficient detail to explain the 
+justification for inclusion missing or very justification, including inclusion, with advantages and disadvantages 
+
+poor [0]  poorly chosen minor issues or of the algorithms later. 
+algorithm [0.5]  missing detail  Appropriate justification of 
+
+[0.75]  inclusion is provided. 
+References included where 
+appropriate. [1]   
+
+6. MLP – description Description Major issues or Good, with minor Excellent description, with 
+missing or very omissions [0.5] issues or missing sufficient detail to explain the 
+poor [0] detail. [0.75]  advantages and 
+
+disadvantages of the 
+algorithm later. References 
+included where necessary.  
+[1]  
+
+7. CNN - description Description missing Major issues or Good, with minor Excellent description, with 
+or very poor [0]  omissions [0.5] issues or missing sufficient detail to explain the 
+
+detail. [0.75]  advantages and  
+disadvantages of the algorithm 
+later. Includes references 
+where necessary.   
+[1]  
+
+8. Comparison of Not included or Major issues or Good; minor issues Excellent comparison of the 
+strengths and very poor [0]  omissions [0.5] including some relative strengths and 
+weaknesses relevant points of weaknesses of the classifiers 
+
+comparison from a theory perspective, 
+missed. [0.75] and considering this 
+
+particular dataset in the 
+comparison.  Sources cited 
+where appropriate. [1]  
+
+Page 10 of 12 
+
+
+
+COMP5318/COMP4318 Machine Learning and Data Mining Semester 2, 2026 
+
+9. Architecture and Not included or Major issues or Good; architecture Excellent description and 
+hyperparameter tuning very poor [0]  omissions in choices and search explanation/justification of 
+description description [0.5] method are well architecture, design choices, 
+
+described/justified search method, and chosen 
+
+and hyperparams hyperparameters and 
+
+chosen to search values. [1]  
+over explained. 
+Minor issues or 
+lacking detail. 
+[0.75]  
+
+Results and discussion – 4 marks 
+
+10. Hyperparameter No figures/tables, or Figures or tables have Good; figures or tables Excellent presentation 
+tuning results only screenshots of major issues or are appropriate and of hyperparameter 
+presentation code output. [0]  omissions [0.5]  show trends/results tuning results in 
+
+from hyperparameter appropriate figures or 
+tuning. Minor issues tables, with no 
+with the presentation presentation issues. If 
+[0.75]  there are any relevant 
+
+differences in runtime, 
+these are presented. 
+[1]  
+
+11. Hyperparameter Not included or very Discussion has major Most important Excellent discussion of 
+tuning discussion poor [0]  issues or omissions  hyperparameter hyperparameter 
+
+[0.5]  tuning results/trends results/trends, 
+are discussed. including possible 
+Includes comment on explanations or 
+how the results reflections on how the 
+aligned with results aligned with 
+predictions. Minor predictions. [1]  
+issues and/or lack of 
+detail. [0.75]  
+
+12. Results table Not included or very Major issues with Minor issues with Excellent table with all 
+poor, including formatting or omission formatting or required results and  
+screenshots of code of multiple results omission of one appropriate 
+output [0]  [0.25]  result [0.35]  formatting [0.5]  
+
+13. Results Not included or very Discussion has major Most important trends Excellent analysis of 
+discussion/analysis poor [0]  issues or omissions  in the results the trends in the  
+
+[0.5]  discussed, and results, with 
+
+compared to comparison to 
+
+expectations based on expectation based on 
+
+theoretical properties. theoretical properties. 
+
+Minor omissions Differences in runtime 
+
+and/or lack of detail. are discussed and 
+
+[1]  justified. Possible 
+exploration of further 
+trends beyond the 
+tabulated results (e.g. 
+differences by class  
+accuracy, types of 
+mistakes made, 
+precision vs.  
+recall etc.) [1.5]  
+
+Conclusion and future work – 1 mark 
+
+Page 11 of 12 
+
+
+
+COMP5318/COMP4318 Machine Learning and Data Mining Semester 2, 2026
+
+14. Summary of main Not included or very Major omissions or Minor issues with Excellent summary 
+findings and poor [0]  issues in summary summary (e.g. does which considers factors 
+identification of study and/or limitations  not consider runtime) such as runtime and 
+
+limitations [0.25]  or misses some practicality of the 
+relevant limitation(s)  algorithms for this 
+[0.35]  particular task.  
+
+Limitations identified 
+are relevant. [0.5]  
+
+15. Future work Not included or very Suggestions are not Minor issues with Suggestions are 
+suggestions poor [0]  specific enough or do suggestions [0.35] concrete and directly 
+
+not address study address the study 
+limitations [0.25]  limitations [0.5]  
+
+Reflection – 0.5 marks 
+
+16. Reflection on most Not included or very poor [0] Reflection is lacking in depth Excellent, relevant reflection 
+important thing learnt or detail or is missing for with sufficient depth for all 
+by each group member some group members [0.25]  group members [0.5]  
+
+Presentation – 0.5 marks
+
+17. Report formatting Serious issues with Unclear structure or Minor issues with No issues with report 
+and structure formatting or structure formatting issues, but structure or structure or formatting. 
+
+that make the report report is still formatting [0.15] Sections are clearly 
+difficult to read [0]  readable [0.1] delineated and 
+
+formatting is clean and 
+legible. Code snippets 
+are not included 
+inappropriately in the 
+report. [0.25]
+
+18. Language Serious spelling or Many minor spelling Several minor spelling Very few minor spelling 
+grammatical issues in or grammar mistakes or grammar mistakes or grammar mistakes. 
+all aspects of report that hinder the overall that do not hinder the Language is academic 
+that make the report readability of the overall readability of in style with clear 
+difficult to read [0]  report, and/or non- the report, and/or non- sentences. [0.25]
+
+academic language in academic language in 
+many sections [0.1] some sections [0.15]
+
+Dataset attribution 
+Jiancheng Yang, Rui Shi, Donglai Wei, Zequan Liu, Lin Zhao, Bilian Ke, Hanspeter Pfister, Bingbing Ni. "MedMNIST 
+v2-A large-scale lightweight benchmark for 2D and 3D biomedical image classification." Scientific Data, 2023. 
+
+Jiancheng Yang, Rui Shi, Bingbing Ni. "MedMNIST Classification Decathlon: A Lightweight AutoML Benchmark 
+for Medical Image Analysis". IEEE 18th International Symposium on Biomedical Imaging (ISBI), 2021. 
+
+Patrick Bilic, Patrick Ferdinand Christ, et al., "The liver tumor segmentation benchmark (lits)," arXiv preprint 
+arXiv:1901.04056, 2019. 
+
+Xuanang Xu, Fugen Zhou, et al., "Efficient multiple organ localization in CT image using 3D region proposal 
+network," IEEE Transactions on Medical Imaging, vol. 38, no. 8, pp. 1885–1898, 2019. 
+
+Page 12 of 12
