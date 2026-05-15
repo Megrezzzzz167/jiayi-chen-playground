@@ -1,0 +1,41 @@
+{% include 'top.html' %}
+
+<div class="content">
+    <div class="container">
+        <h1 class="title" align="center">Update Participation</h1>
+
+        <form class="newbooking pure-form pure-form-aligned" method="POST" action="{{url_for('update_participation')}}">
+            <div class="pure-control-group">
+                <label for="trial_id">Trial ID:</label>
+                <input type="text" name="trial_id" value="{{ participationInfo.trial_id }}" size="25" readonly required>
+            </div>
+            <div class="pure-control-group">
+                <label for="trial_name">Trial Name:</label>
+                <input type="text" name="trial_name" value="{{ participationInfo.trial_name }}" size="25" readonly required>
+            </div>
+            <div class="pure-control-group">
+                <label for="athlete">Athlete Name:</label>
+                <input type="text" name="athlete" value="{{ participationInfo.athlete }}" size="25" readonly requried>
+            </div>
+            <div class="pure-control-group">
+                <label for="athlete_username">Athlete Username:</label>
+                <input type="text" name="athlete_username" value="{{ participationInfo.athlete_username }}" size="25" readonly requried>
+            </div>
+			<div class="pure-control-group">
+                <label for="official_username">Official Username:</label>
+				<input type="text" name="official_username" value="{{ participationInfo.official_username }}" size="25" autofocus>
+            </div>
+            <div class="pure-control-group">
+                <label for="is_winner">Is Winner:</label>
+				<input type="text" name="is_winner" value="{{ participationInfo.is_winner }}" size="25">
+            </div>
+            <div class="pure-control-group">
+                <label for="performance_note">Performance Note:</label>
+				<textarea name="performance_note" rows="5" cols=32>{{ participationInfo.performance_note }}</textarea>
+            </div>
+            <button type="submit" class="flat">Update Participation</button>
+        </form>
+    </div>
+</div>
+
+{% include 'bottom.html' %}

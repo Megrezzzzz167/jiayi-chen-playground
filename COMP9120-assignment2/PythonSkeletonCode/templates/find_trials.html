@@ -1,0 +1,63 @@
+{% include 'top.html' %}
+
+<div class="content">
+    <div class="container">
+        <h1 class="title" align="center">Trial Details</h1>
+        <div class="search">
+            <form class="search-top" method="POST" action="{{url_for('find_trials')}}">
+                <input type="text" name="search" placeholder="Search" autofocus>
+                <button class="flat" type="submit">Find</button>
+                <div class="clear"></div>
+            </form>
+        </div>
+        <table class="styled">
+            <thead>
+                <tr>
+				    <th>Trial ID</th>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Athlete</th>
+					<th>Is Winner</th>
+                    <th>Official</th>
+                    <th>Performance Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for i in trial_list %}
+					<tr class='clickable-row' data-href="{{url_for('update_participation',  trial_id = i.trial_id, 
+                                                                                            trial_name = i.trial_name, 
+                                                                                            athlete = i.athlete, 
+                                                                                            athlete_username = i.athlete_username,
+                                                                                            official_username = i.official_username, 
+                                                                                            is_winner = i.is_winner, 
+                                                                                            performance_note = i.performance_note)}}" 
+                                                                                            method="GET">
+                        <td>{{ i.trial_id }}</td>
+                        <td>{{ i.trial_name }}</td>
+                        <td>{{ i.trial_date }}</td>
+                        <td>{{ i.athlete}}</td>
+                        <td>{{ i.is_winner }}</td>
+                        <td>{{ i.official }}</td>
+                        <td>{{ i.performance_note }}</td>
+                    </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" defer="defer"> jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+	$(".clickable-row").mouseover(function() {
+        $(this).css('background-color', '#eeeeee');
+        $(this).css('cursor', 'pointer');
+    });
+	$(".clickable-row").mouseout(function() {
+        $(this).css('background-color', 'white');
+    });
+
+});
+</script>
+
+{% include 'bottom.html' %}

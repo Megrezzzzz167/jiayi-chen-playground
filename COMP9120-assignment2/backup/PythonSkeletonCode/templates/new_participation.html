@@ -1,0 +1,30 @@
+{% include 'top.html' %}
+
+<div class="content">
+    <div class="container">
+        <h1 class="title" align="center">New Trial Participation</h1>
+
+        <form class="newbooking pure-form pure-form-aligned" method="POST" action="{{url_for('new_participation')}}">
+            <div class="pure-control-group">
+                <label for="athlete_username">Athlete Username:</label>
+                <input type="text" name="athlete_username" size="25" autofocus>
+            </div>
+            <div class="pure-control-group">
+                <label for="official_username">Official Username:</label>
+                <input type="text" name="official_username" size="25">
+            </div>
+            <div class="pure-control-group">
+                <label for="trial_name">Trial Name:</label>
+                <input type="text" name="trial_name" size="25">
+            </div>
+            <div class="pure-control-group">
+                <label for="trial_date">Trial Date:</label>
+                <input type="date" name="trial_date" size="25">
+            </div>
+            
+            <button type="submit" class="flat">Add Trial Participation</button>
+        </form>
+    </div>
+</div>
+
+{% include 'bottom.html' %}

@@ -1,0 +1,57 @@
+{% include 'top.html' %}
+
+<div class="content">
+    <div class="container">
+        <h1 class="title" align="center">Summary</h1>
+        <div class="search">
+            <!-- TODO -->
+            <form class="search-top" method="POST" action="{{url_for('find_trials')}}"> 
+                <input type="text" name="search" placeholder="Search" autofocus>
+                <button class="flat" type="submit">Find</button>
+                <div class="clear"></div>
+            </form>
+        </div>
+        <table class="styled">
+            <thead>
+                <tr>
+				    <th>Athlete</th>
+                    <th>Trials Scheduled</th>
+                    <th>Trials Completed</th>
+                    <th>Wins</th>
+                    <th>Eligible Equipment</th>
+					<th>Total Sponsorship $</th>
+                    <th>Last Trial Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for i in summary %}
+                    <tr  class='clickable-row' data-href="{{url_for('find_trials', username=i.athlete_username)}}" method="GET">
+					    <td>{{ i.athlete_info }}</td>
+                        <td>{{ i.trials_scheduled }}</td>
+                        <td>{{ i.trials_completed }}</td>
+                        <td>{{ i.trials_wins }}</td>
+                        <td>{{ i.equipment_count }}</td>
+                        <td>{{ i.sponsorship }}</td>
+						<td>{{ i.last_trial_date }}</td>
+                    </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" defer="defer"> jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+	$(".clickable-row").mouseover(function() {
+        $(this).css('background-color', '#eeeeee');
+        $(this).css('cursor', 'pointer');
+    });
+	$(".clickable-row").mouseout(function() {
+        $(this).css('background-color', 'white');
+    });
+
+});
+</script>
+
+{% include 'bottom.html' %}
